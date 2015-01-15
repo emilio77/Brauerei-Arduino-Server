@@ -44,6 +44,7 @@ var
   x, logfilename, displayfilename: string;
   floattempalt,floattemp,tempdelta: extended;
   timestamp: Array[1..3] of TDateTime;
+  logfilecounter: integer;
 
 implementation
 
@@ -103,6 +104,7 @@ begin
             begin
               try
                 AssignFile (MyFile, logfilename);
+                if logfilecounter>100 then begin DeleteFile(logfilename); logfilecounter:=0; end;
                 if FileExists(logfilename) then
                 try Append(MyFile); except Mem_Rcv.Lines.Strings[Mem_Rcv.Lines.Count-2]:='Datei konnte nicht geschrieben werden'; Tmr_Rcv.Enabled := true; exit; end
                 else
@@ -110,6 +112,7 @@ begin
                 tfs:=(DateTimeToStr(Now)+';'+Mem_Rcv.Lines.Strings[Mem_Rcv.Lines.Count-2]);
                 writeln(MyFile, tfs);
                 CloseFile(MyFile);
+                logfilecounter:=logfilecounter+1;
                 Mem_Rcv.Lines.Strings[Mem_Rcv.Lines.Count-2]:=(DateTimeToStr(Now)+';'+Mem_Rcv.Lines.Strings[Mem_Rcv.Lines.Count-2]); //Text hinzufügen
               except
                 Tmr_Rcv.Enabled := true;

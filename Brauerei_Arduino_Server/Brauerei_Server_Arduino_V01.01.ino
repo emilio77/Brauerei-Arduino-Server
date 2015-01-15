@@ -175,11 +175,11 @@ void Braudisplay()
     Serial.println(temperatur,1);
     }  
   Serial.end();                        // Serieller Port für Isttemperaturübertragung schließen
-  delay(200);                                              
   for (int schleife2=0; schleife2 <= 9; schleife2++)    // Schleife für Serielle Kommunikation
     {                                               
+    delay(120);
     Serial.begin(19600);                                // Serieller Port für Statusübertragung öffnen
-    delay(210);
+    delay(120);
     lcd.setCursor(0, 1); 
     for (int schleife=0; schleife < 20; schleife++) { received[schleife]= ' ';}
     for (int schleife=0; schleife < Serial.available(); schleife++)
@@ -254,7 +254,7 @@ void Braudisplay()
         }        
       }
       
-    else if (digitalRead(Autoschalter)==HIGH)                                                                          // wenn Automatikschalter offen dann...
+    else                                                                                                               // wenn Automatikschalter offen dann...
       {  
       lcd.setCursor(12, 1); 
       lcd.print(" manuell"); 
