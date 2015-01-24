@@ -82,8 +82,8 @@ B00000
 
 float temperatur, temperaturalt, temperaturneu;
 
-const boolean aus = LOW;                           // Hier kann bei Low-Aktiven Relaiskarten einfach High und Low vertauscht werden
-const boolean an = HIGH;                           // Hier kann bei Low-Aktiven Relaiskarten einfach High und Low vertauscht werden
+const boolean aus = LOW;                          // Hier kann bei Low-Aktiven Relaiskarten einfach High und Low vertauscht werden
+const boolean an = HIGH;                            // Hier kann bei Low-Aktiven Relaiskarten einfach High und Low vertauscht werden
 
 const int Heizung = 4;                             // Im folgenden sind die Pins der Sensoren und Aktoren festgelegt
 const int Ruehrwerk = 5;
@@ -156,7 +156,7 @@ void Braudisplay()
   delay(200);
   lcd.setCursor(12, 0); 
   if (sensor == 'd') lcd.print(" Display"); else if (sensor == 'N') lcd.print("  NTC10k"); else lcd.print(" DS18B20");   // Sensortyp ausgeben 
-  Serial.begin(19600);                // Serieller Port für Isttemperaturübertragung öffnen
+  Serial.begin(19200);                // Serieller Port für Isttemperaturübertragung öffnen
   if (sensor=='N')                    // NTC-Messung starten und ausgeben
     {
     temperaturmessungNTC(); 
@@ -175,11 +175,11 @@ void Braudisplay()
     Serial.println(temperatur,1);
     }  
   Serial.end();                        // Serieller Port für Isttemperaturübertragung schließen
+  delay(200);                                              
   for (int schleife2=0; schleife2 <= 9; schleife2++)    // Schleife für Serielle Kommunikation
     {                                               
-    delay(120);
-    Serial.begin(19600);                                // Serieller Port für Statusübertragung öffnen
-    delay(120);
+    Serial.begin(19200);                                // Serieller Port für Statusübertragung öffnen
+    delay(210);
     lcd.setCursor(0, 1); 
     for (int schleife=0; schleife < 20; schleife++) { received[schleife]= ' ';}
     for (int schleife=0; schleife < Serial.available(); schleife++)
@@ -247,14 +247,10 @@ void Braudisplay()
         else {lcd.setCursor(17, 2); lcd.print("  "); digitalWrite(Pumpe,aus);}
         if (received[4] == 'A') {lcd.setCursor(19, 2); lcd.write(3); digitalWrite(Summer,an);}
         else {lcd.setCursor(19, 2); lcd.print(" "); digitalWrite(Summer,aus);}
-      
-        if ( received[7] == 'D' ) {sensor= 'D';}                                                                       // Sensor Typ einstellen
-        else if ( received[7] == 'd' ) {sensor= 'd';}
-        else if ( received[7] == 'N' ) {sensor= 'N';}
         }        
       }
-      
-    else                                                                                                               // wenn Automatikschalter offen dann...
+    
+    else if (digitalRead(Autoschalter)==HIGH)                                                                          // wenn Automatikschalter offen dann...
       {  
       lcd.setCursor(12, 1); 
       lcd.print(" manuell"); 
@@ -270,6 +266,11 @@ void Braudisplay()
       else {lcd.setCursor(19, 2); lcd.write(3); digitalWrite(Summer,an);}
       }
     }  
+
+  if (((received[0]=='C') && (received[18]=='c')) && (received[7] == 'D' )) {sensor= 'D';}                               // Sensor Typ einstellen
+  else if (((received[0]=='C') && (received[18]=='c')) && (received[7] == 'd' )) {sensor= 'd';}
+  else if (((received[0]=='C') && (received[18]=='c')) && (received[7] == 'N' )) {sensor= 'N';}
+
   goto BStart;                        // zurück zum Anfang des Hauptprogramms 
   
   BEnde:

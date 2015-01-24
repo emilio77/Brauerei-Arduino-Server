@@ -175,7 +175,7 @@ procedure OpenLine ;
 begin with MainForm do begin
   ser.Connect(ComboBox1.Text) ;
   if ser.LastError<>sOK then begin Mem_Rcv.Lines.Append('No '+ComboBox1.Text) ; exit ; end ;
-  ser.Config({Baud}19600, {Bits}8, {Parity}'N', {StopBits}SB1, {Xon/Xoff}false, {DTR/CTS}false);
+  ser.Config({Baud}19200, {Bits}8, {Parity}'N', {StopBits}SB1, {Xon/Xoff}false, {DTR/CTS}false);
   if ser.LastError<>sOK then begin Mem_Rcv.Lines.Append('Config fail') ; exit ; end ;
   Mem_Rcv.Lines.append('Connected');
   Mem_Rcv.Lines.Append('');
