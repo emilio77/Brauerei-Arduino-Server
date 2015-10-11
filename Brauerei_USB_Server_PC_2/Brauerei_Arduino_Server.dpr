@@ -1,4 +1,4 @@
-program CtlXY;
+program Brauerei_Arduino_Server;
 
 uses
   Forms,

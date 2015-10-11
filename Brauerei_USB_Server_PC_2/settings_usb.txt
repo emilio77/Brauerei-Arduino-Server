@@ -1,0 +1,4 @@
+COM4
+DS18B20
+C:\Brauerei\Temperatur\log.txt
+C:\Program Files (x86)\Borland\Delphi7\Projects\Brauerei_Arduino_Server_2\display.txt

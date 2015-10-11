@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 137
   Width = 498
   Height = 246
-  Caption = 'Brauerei Arduino COM Server'
+  Caption = 'Brauerei Arduino USB Server'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -96,7 +96,7 @@ object MainForm: TMainForm
       'Display')
   end
   object Button1: TButton
-    Left = 352
+    Left = 344
     Top = 8
     Width = 129
     Height = 49
